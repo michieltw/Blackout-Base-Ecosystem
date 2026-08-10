@@ -1,0 +1,518 @@
+Entity,Field,Type,Required,PK,FK,References,Calculated,Description,Source,Status
+Organization,id,UUID,YES,YES,NO,,NO,Unique organization identifier,MANAGER,PLANNED
+Organization,name,TEXT,YES,NO,NO,,NO,Organization name,MANAGER,PLANNED
+,,,,,,,,,,
+League,id,UUID,YES,YES,NO,,NO,Unique league identifier,MANAGER,PLANNED
+League,organization_id,UUID,YES,NO,YES,Organization.id,NO,Organization owning league,MANAGER,PLANNED
+League,name,TEXT,YES,NO,NO,,NO,League name,MANAGER,PLANNED
+League,description,TEXT,NO,NO,NO,,NO,League description,MANAGER,PLANNED
+League,status,ENUM,YES,NO,NO,,NO,League status,MANAGER,PLANNED
+,,,,,,,,,,
+Division,id,UUID,YES,YES,NO,,NO,Unique division identifier,MANAGER,PLANNED
+Division,league_id,UUID,YES,NO,YES,League.id,NO,League containing division,MANAGER,PLANNED
+Division,name,TEXT,YES,NO,NO,,NO,Division name,MANAGER,PLANNED
+Division,level,INTEGER,NO,NO,NO,,NO,Competitive level,MANAGER,PLANNED
+,,,,,,,,,,
+Competition,id,UUID,YES,YES,NO,,NO,Unique competition identifier,MANAGER,PLANNED
+Competition,league_id,UUID,YES,NO,YES,League.id,NO,League containing competition,MANAGER,PLANNED
+Competition,division_id,UUID,NO,NO,YES,Division.id,NO,Division containing competition,MANAGER,PLANNED
+Competition,name,TEXT,YES,NO,NO,,NO,Competition name,MANAGER,PLANNED
+Competition,type,ENUM,YES,NO,NO,,NO,Competition type,MANAGER,PLANNED
+,,,,,,,,,,
+Season,id,UUID,YES,YES,NO,,NO,Unique season identifier,HKS + MANAGER,ACTIVE
+Season,competition_id,UUID,YES,NO,YES,Competition.id,NO,Competition for this season,MANAGER,ACTIVE
+Season,name,TEXT,YES,NO,NO,,NO,Season name,HKS + MANAGER,ACTIVE
+Season,start_date,DATE,NO,NO,NO,,NO,Season start date,MANAGER,ACTIVE
+Season,end_date,DATE,NO,NO,NO,,NO,Season end date,MANAGER,ACTIVE
+Season,status,ENUM,YES,NO,NO,,NO,Season status,MANAGER,ACTIVE
+,,,,,,,,,,
+Team,id,UUID,YES,YES,NO,,NO,Unique team identifier,HKS + MANAGER,ACTIVE
+Team,name,TEXT,YES,NO,NO,,NO,Team name,HKS,ACTIVE
+Team,short_name,TEXT,NO,NO,NO,,NO,Short team name,MANAGER,ACTIVE
+Team,logo_url,TEXT,NO,NO,NO,,NO,Team logo,MANAGER,ACTIVE
+Team,description,TEXT,NO,NO,NO,,NO,Team description,MANAGER,ACTIVE
+,,,,,,,,,,
+TeamSeason,id,UUID,YES,YES,NO,,NO,Unique team-season relationship,MANAGER,PLANNED
+TeamSeason,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+TeamSeason,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+TeamSeason,division_id,UUID,NO,NO,YES,Division.id,NO,Division,MANAGER,PLANNED
+TeamSeason,status,ENUM,YES,NO,NO,,NO,Team participation status,MANAGER,PLANNED
+,,,,,,,,,,
+Player,id,UUID,YES,YES,NO,,NO,Unique player identifier,HKS + MANAGER,ACTIVE
+Player,name,TEXT,YES,NO,NO,,NO,Player name,HKS,ACTIVE
+Player,first_name,TEXT,NO,NO,NO,,NO,Player first name,MANAGER,ACTIVE
+Player,last_name,TEXT,NO,NO,NO,,NO,Player last name,MANAGER,ACTIVE
+Player,position,ENUM,YES,NO,YES,Position.id,NO,Player position,HKS + MANAGER,ACTIVE
+Player,jersey_number,INTEGER,NO,NO,NO,,NO,Player jersey number,HKS,ACTIVE
+Player,date_of_birth,DATE,NO,NO,NO,,NO,Date of birth,MANAGER,ACTIVE
+Player,nationality,TEXT,NO,NO,NO,,NO,Player nationality,MANAGER,ACTIVE
+Player,photo_url,TEXT,NO,NO,NO,,NO,Player photo,HKS,ACTIVE
+Player,bio,TEXT,NO,NO,NO,,NO,Player biography,HKS,ACTIVE
+Player,status,ENUM,YES,NO,NO,,NO,Player status,MANAGER,ACTIVE
+,,,,,,,,,,
+PlayerTeam,id,UUID,YES,YES,NO,,NO,Player-team relationship,MANAGER,PLANNED
+PlayerTeam,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+PlayerTeam,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+PlayerTeam,start_date,DATE,NO,NO,NO,,NO,Start of team membership,MANAGER,PLANNED
+PlayerTeam,end_date,DATE,NO,NO,NO,,NO,End of team membership,MANAGER,PLANNED
+PlayerTeam,status,ENUM,YES,NO,NO,,NO,Membership status,MANAGER,PLANNED
+,,,,,,,,,,
+PlayerSeason,id,UUID,YES,YES,NO,,NO,Player-season relationship,MANAGER,PLANNED
+PlayerSeason,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+PlayerSeason,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+PlayerSeason,team_id,UUID,YES,NO,YES,Team.id,NO,Team representing player in season,MANAGER,PLANNED
+,,,,,,,,,,
+Position,id,UUID,YES,YES,NO,,NO,Unique position identifier,MANAGER,PLANNED
+Position,code,TEXT,YES,NO,NO,,NO,Position code,MANAGER,PLANNED
+Position,name,TEXT,YES,NO,NO,,NO,Position name,MANAGER,PLANNED
+,,,,,,,,,,
+Location,id,UUID,YES,YES,NO,,NO,Unique location identifier,MANAGER,PLANNED
+Location,name,TEXT,YES,NO,NO,,NO,Location name,MANAGER,PLANNED
+Location,address,TEXT,NO,NO,NO,,NO,Location address,MANAGER,PLANNED
+Location,city,TEXT,NO,NO,NO,,NO,Location city,MANAGER,PLANNED
+Location,country,TEXT,NO,NO,NO,,NO,Location country,MANAGER,PLANNED
+,,,,,,,,,,
+Game,id,UUID,YES,YES,NO,,NO,Unique game identifier,HKS + MANAGER,ACTIVE
+Game,season_id,UUID,YES,NO,YES,Season.id,NO,Season,HKS + MANAGER,ACTIVE
+Game,home_team_id,UUID,YES,NO,YES,Team.id,NO,Our team,HKS + MANAGER,ACTIVE
+Game,away_team_id,UUID,YES,NO,YES,Team.id,NO,Opponent name,HKS,ACTIVE
+Game,date,DATETIME,YES,NO,NO,,NO,Game date,HKS,ACTIVE
+Game,location_id,UUID,YES,NO,YES,Location.id,NO,Location,MANAGER,PLANNED
+Game,team_score,INTEGER,NO,NO,NO,,NO,Team score,HKS,ACTIVE
+Game,opponent_score,INTEGER,NO,NO,NO,,NO,Opponent score,HKS,ACTIVE
+Game,is_final,BOOLEAN,NO,NO,NO,,NO,Whether game is final,HKS,ACTIVE
+Game,is_overtime,BOOLEAN,NO,NO,NO,,NO,Whether game went to overtime,HKS,ACTIVE
+Game,is_shootout,BOOLEAN,NO,NO,NO,,NO,Whether game went to shootout,HKS,ACTIVE
+Game,shots_for,INTEGER,NO,NO,NO,,NO,Shots by team,HKS,ACTIVE
+Game,shots_against,INTEGER,NO,NO,NO,,NO,Shots against team,HKS,ACTIVE
+Game,video_url,TEXT,NO,NO,NO,,NO,Game video URL,HKS,ACTIVE
+Game,status,ENUM,YES,NO,NO,,NO,Game status,MANAGER,ACTIVE
+,,,,,,,,,,ACTIVE
+GamePlayer,id,UUID,YES,YES,NO,,NO,Unique participation identifier,HKS,ACTIVE
+GamePlayer,game_id,UUID,YES,NO,YES,Game.id,NO,Game,HKS,ACTIVE
+GamePlayer,player_id,UUID,YES,NO,YES,Player.id,NO,Player,HKS,ACTIVE
+GamePlayer,checked_in,BOOLEAN,NO,NO,NO,,NO,Speler is ingecheckt,MANAGER,ACTIVE
+,,,,,,,,,,ACTIVE
+GoalEvent,id,UUID,YES,YES,NO,,NO,Unique goal event identifier,HKS,ACTIVE
+GoalEvent,game_id,UUID,YES,NO,YES,Game.id,NO,Game,HKS,ACTIVE
+GoalEvent,scorer_player_id,UUID,YES,NO,YES,Player.id,NO,Goal scorer,HKS,ACTIVE
+GoalEvent,assist_player_id,UUID,NO,NO,YES,Player.id,NO,First assist,HKS,ACTIVE
+GoalEvent,assist2_player_id,UUID,NO,NO,YES,Player.id,NO,Second assist,HKS,ACTIVE
+GoalEvent,is_power_play,BOOLEAN,NO,NO,NO,,NO,Power play goal,HKS,ACTIVE
+GoalEvent,is_short_handed,BOOLEAN,NO,NO,NO,,NO,Short-handed goal,HKS,ACTIVE
+GoalEvent,period,INTEGER,NO,NO,NO,,NO,Period of goal,MANAGER,ACTIVE
+GoalEvent,time,TEXT,NO,NO,NO,,NO,Time in period,MANAGER,ACTIVE
+,,,,,,,,,,ACTIVE
+Penalty,id,UUID,YES,YES,NO,,NO,Unique penalty identifier,HKS,ACTIVE
+Penalty,game_id,UUID,YES,NO,YES,Game.id,NO,Game,HKS,ACTIVE
+Penalty,player_id,UUID,YES,NO,YES,Player.id,NO,Player,HKS,ACTIVE
+Penalty,penalty_type,ENUM,YES,NO,NO,,NO,Penalty type,HKS,ACTIVE
+Penalty,period,INTEGER,NO,NO,NO,,NO,Period of penalty,MANAGER,ACTIVE
+Penalty,duration,INTEGER,NO,NO,NO,,NO,Penalty duration in minutes,MANAGER,ACTIVE
+,,,,,,,,,,
+GamePeriod,id,UUID,YES,YES,NO,,NO,Unique game period,MANAGER,PLANNED
+GamePeriod,game_id,UUID,YES,NO,YES,Game.id,NO,Game,MANAGER,PLANNED
+GamePeriod,period_number,INTEGER,YES,NO,NO,,NO,Period number,MANAGER,PLANNED
+GamePeriod,status,ENUM,YES,NO,NO,,NO,Period status,MANAGER,PLANNED
+,,,,,,,,,,
+GoalieAppearance,id,UUID,YES,YES,NO,,NO,Unique goalie appearance,MANAGER,PLANNED
+GoalieAppearance,game_id,UUID,YES,NO,YES,Game.id,NO,Game,MANAGER,PLANNED
+GoalieAppearance,player_id,UUID,YES,NO,YES,Player.id,NO,Goalie,MANAGER,PLANNED
+GoalieAppearance,shots_against,INTEGER,NO,NO,NO,,NO,Shots against goalie,MANAGER,PLANNED
+GoalieAppearance,saves,INTEGER,NO,NO,NO,,NO,Saves,MANAGER,PLANNED
+GoalieAppearance,goals_against,INTEGER,NO,NO,NO,,NO,Goals against,MANAGER,PLANNED
+,,,,,,,,,,
+PlayerGameStats,id,UUID,YES,YES,NO,,NO,Unique player game statistics,MANAGER,PLANNED
+PlayerGameStats,game_id,UUID,YES,NO,YES,Game.id,NO,Game,MANAGER,PLANNED
+PlayerGameStats,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+PlayerGameStats,goals,INTEGER,NO,NO,NO,,YES,Goals in game,MANAGER,PLANNED
+PlayerGameStats,assists,INTEGER,NO,NO,NO,,YES,Assists in game,MANAGER,PLANNED
+PlayerGameStats,points,INTEGER,NO,NO,NO,,YES,Goals plus assists,MANAGER,PLANNED
+PlayerGameStats,plus_minus,INTEGER,NO,NO,NO,,YES,Plus/minus,MANAGER,PLANNED
+,,,,,,,,,,
+TeamGameStats,id,UUID,YES,YES,NO,,NO,Unique team game statistics,MANAGER,PLANNED
+TeamGameStats,game_id,UUID,YES,NO,YES,Game.id,NO,Game,MANAGER,PLANNED
+Tournament,is_public,BOOLEAN,NO,NO,NO,,NO,Toernooi is openbaar,MANAGER,PLANNED
+TeamGameStats,shots_for,INTEGER,NO,NO,NO,,NO,Shots for,MANAGER,PLANNED
+TeamGameStats,shots_against,INTEGER,NO,NO,NO,,NO,Shots against,MANAGER,PLANNED
+TeamGameStats,goals_for,INTEGER,NO,NO,NO,,YES,Goals for,MANAGER,PLANNED
+TeamGameStats,goals_against,INTEGER,NO,NO,NO,,YES,Goals against,MANAGER,PLANNED
+,,,,,,,,,,
+Tournament,id,UUID,YES,YES,NO,,NO,Unique tournament identifier,HKS + MANAGER,ACTIVE
+Tournament,name,TEXT,YES,NO,NO,,NO,Tournament name,HKS,ACTIVE
+Tournament,description,TEXT,NO,NO,NO,,NO,Tournament description,HKS,ACTIVE
+Tournament,status,ENUM,YES,NO,NO,,NO,Tournament status,HKS,ACTIVE
+Tournament,start_date,DATE,NO,NO,NO,,NO,Tournament start date,MANAGER,PLANNED
+Tournament,end_date,DATE,NO,NO,NO,,NO,Tournament end date,MANAGER,PLANNED
+,,,,,,,,,,
+TournamentPool,id,UUID,YES,YES,NO,,NO,Unique tournament pool,HKS,ACTIVE
+TournamentPool,tournament_id,UUID,YES,NO,YES,Tournament.id,NO,Tournament,HKS,ACTIVE
+TournamentPool,name,TEXT,YES,NO,NO,,NO,Pool name,HKS,ACTIVE
+,,,,,,,,,,ACTIVE
+TournamentTeam,id,UUID,YES,YES,NO,,NO,Unique tournament team relationship,HKS,ACTIVE
+TournamentTeam,tournament_id,UUID,YES,NO,YES,Tournament.id,NO,Tournament,HKS,ACTIVE
+TournamentTeam,team_id,UUID,YES,NO,YES,Team.id,NO,Participating team,HKS,ACTIVE
+,,,,,,,,,,ACTIVE
+TournamentPlayer,id,UUID,YES,YES,NO,,NO,Unique tournament player relationship,HKS,ACTIVE
+TournamentPlayer,tournament_id,UUID,YES,NO,YES,Tournament.id,NO,Tournament,HKS,ACTIVE
+TournamentPlayer,player_id,UUID,YES,NO,YES,Player.id,NO,Participating player,HKS,ACTIVE
+,,,,,NO,,,,,ACTIVE
+TournamentGame,id,UUID,YES,YES,NO,,NO,Unique tournament game,HKS,ACTIVE
+TournamentGame,tournament_id,UUID,YES,NO,YES,Tournament.id,NO,Tournament,HKS,ACTIVE
+TournamentGame,home_team_id,UUID,YES,NO,YES,Team.id,NO,Home team,HKS,ACTIVE
+TournamentGame,away_team_id,UUID,YES,NO,YES,Team.id,NO,Away team,HKS,ACTIVE
+TournamentGame,date,DATETIME,YES,NO,NO,,NO,Game date,HKS,ACTIVE
+TournamentGame,status,ENUM,YES,NO,NO,,NO,Game status,HKS,ACTIVE
+,,,,,,,,,,
+TournamentGame,division_id,UUID,YES,NO,YES,TournamentDivision.id,NO,Divisie,MANAGER,PLANNED
+TournamentGame,game_type,ENUM,YES,NO,NO,,NO,Type wedstrijd,MANAGER,ACTIVE
+,,,,,,,,,,ACTIVE
+,,,,,,,,,,ACTIVE
+,,,,,,,,,,ACTIVE
+,,,,,,,,,,ACTIVE
+,,,,,,,,,,ACTIVE
+TournamentGame,game_type,ENUM,YES,NO,NO,,NO,Type wedstrijd,MANAGER,ACTIVE
+TeamGameStats,shots_against,INTEGER,NO,NO,NO,,NO,Shots against,MANAGER,ACTIVE
+TournamentGame,away_score,INTEGER,NO,NO,NO,,NO,Uitscore,MANAGER,PLANNED
+TournamentGoalEvent,game_id,UUID,YES,NO,YES,TournamentGame.id,NO,Game,HKS,ACTIVE
+TournamentGoalEvent,scorer_player_id,UUID,YES,NO,YES,Player.id,NO,Goal scorer,HKS,ACTIVE
+,,,,,,,,,,ACTIVE
+TournamentPenalty,id,UUID,YES,YES,NO,,NO,Unique tournament penalty,HKS,ACTIVE
+TournamentPenalty,game_id,UUID,YES,NO,YES,TournamentGame.id,NO,Game,HKS,ACTIVE
+TournamentPenalty,player_id,UUID,YES,NO,YES,Player.id,NO,Player,HKS,ACTIVE
+TournamentPenalty,penalty_type,ENUM,YES,NO,NO,,NO,Penalty type,HKS,ACTIVE
+,,,,,,,,,,ACTIVE
+Schedule,id,UUID,YES,YES,NO,,NO,Scheduled game identifier,MANAGER,PLANNED
+Schedule,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+Schedule,home_team_id,UUID,YES,NO,YES,Team.id,NO,Home team,MANAGER,PLANNED
+Schedule,away_team_id,UUID,YES,NO,YES,Team.id,NO,Away team,MANAGER,PLANNED
+Official,name,TEXT,YES,NO,NO,,NO,Official name,MANAGER,PLANNED
+Official,role,ENUM,YES,NO,NO,,NO,Official role,MANAGER,PLANNED
+,,,,,,,,,,
+GameOfficial,id,UUID,YES,YES,NO,,NO,Game-official relationship,MANAGER,PLANNED
+GameOfficial,game_id,UUID,YES,NO,YES,Game.id,NO,Game,MANAGER,PLANNED
+GameOfficial,official_id,UUID,YES,NO,YES,Official.id,NO,Official,MANAGER,PLANNED
+,,,,,,,,,,
+Contract,id,UUID,YES,YES,NO,,NO,Unique contract,MANAGER,PLANNED
+Contract,player_id,UUID,YES,NO,YES,,NO,Player,MANAGER,PLANNED
+Contract,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+Contract,start_date,DATE,YES,NO,NO,,NO,Contract start,MANAGER,PLANNED
+Contract,end_date,DATE,NO,NO,NO,,NO,Contract end,MANAGER,PLANNED
+Contract,status,ENUM,YES,NO,NO,,NO,Contract status,MANAGER,PLANNED
+,,,,,,,,,,
+Transfer,id,UUID,YES,YES,NO,,NO,Unique transfer,MANAGER,PLANNED
+Transfer,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+Transfer,from_team_id,UUID,NO,NO,YES,Team.id,NO,Previous team,MANAGER,PLANNED
+Transfer,to_team_id,UUID,YES,NO,YES,Team.id,NO,New team,MANAGER,PLANNED
+Transfer,date,DATE,YES,NO,NO,,NO,Transfer date,MANAGER,PLANNED
+Transfer,status,ENUM,YES,NO,NO,,NO,Transfer status,MANAGER,PLANNED
+,,,,,,,,,,
+Trade,id,UUID,YES,YES,NO,,NO,Unique trade,MANAGER,PLANNED
+Trade,date,DATE,YES,NO,NO,,NO,Trade date,MANAGER,PLANNED
+Trade,status,ENUM,YES,NO,NO,,NO,Trade status,MANAGER,PLANNED
+Trade,description,TEXT,NO,NO,NO,,NO,Trade description,MANAGER,PLANNED
+,,,,,,,,,,
+Draft,id,UUID,YES,YES,NO,,NO,Unique draft,MANAGER,PLANNED
+Draft,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+Draft,name,TEXT,YES,NO,NO,,NO,Draft name,MANAGER,PLANNED
+Draft,status,ENUM,YES,NO,NO,,NO,Draft status,MANAGER,PLANNED
+,,,,,,,,,,
+DraftPick,id,UUID,YES,YES,YES,,NO,Unique draft pick,MANAGER,PLANNED
+DraftPick,draft_id,UUID,YES,NO,YES,Draft.id,NO,Draft,MANAGER,PLANNED
+DraftPick,team_id,UUID,YES,NO,YES,Team.id,NO,Selecting team,MANAGER,PLANNED
+DraftPick,player_id,UUID,YES,NO,YES,Player.id,NO,Selected player,MANAGER,PLANNED
+DraftPick,round,INTEGER,YES,NO,NO,,NO,Draft round,MANAGER,PLANNED
+DraftPick,pick_number,INTEGER,YES,NO,NO,,NO,Pick number,MANAGER,PLANNED
+,,,,,,,,,,
+Salary,id,UUID,YES,YES,NO,,NO,Unique salary record,MANAGER,PLANNED
+Salary,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+Salary,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+Salary,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+Salary,amount,DECIMAL,YES,NO,NO,,NO,Salary amount,MANAGER,PLANNED
+,,,,,,,,,,
+SalaryCap,id,UUID,YES,YES,NO,,NO,Unique salary cap record,MANAGER,PLANNED
+SalaryCap,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+SalaryCap,amount,DECIMAL,YES,NO,NO,,NO,Salary cap amount,MANAGER,PLANNED
+,,,,,,,,,,
+Award,id,UUID,YES,YES,NO,,NO,Unique award,MANAGER,PLANNED
+Award,name,TEXT,YES,NO,NO,,NO,Award name,MANAGER,PLANNED
+Award,description,TEXT,NO,NO,NO,,NO,Award description,MANAGER,PLANNED
+Award,type,ENUM,YES,NO,NO,,NO,Award type,MANAGER,PLANNED
+,,,,,,,,,,
+AwardResult,id,UUID,YES,YES,NO,,NO,Unique award result,MANAGER,PLANNED
+AwardResult,award_id,UUID,YES,NO,YES,Award.id,NO,Award,MANAGER,PLANNED
+AwardResult,player_id,UUID,NO,NO,YES,Player.id,NO,Winning player,MANAGER,PLANNED
+AwardResult,team_id,UUID,NO,NO,YES,Team.id,NO,Winning team,MANAGER,PLANNED
+AwardResult,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+,,,,,,,,,,
+Achievement,id,UUID,YES,YES,NO,,NO,Unique achievement,MANAGER,PLANNED
+Achievement,name,TEXT,YES,NO,NO,,NO,Achievement name,MANAGER,PLANNED
+Achievement,description,TEXT,NO,NO,NO,,NO,Achievement description,MANAGER,PLANNED
+,,,,,,,,,,
+PlayerAchievement,id,UUID,YES,YES,NO,,NO,Player achievement,MANAGER,PLANNED
+PlayerAchievement,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+PlayerAchievement,achievement_id,UUID,YES,NO,YES,Achievement.id,NO,Achievement,MANAGER,PLANNED
+PlayerAchievement,season_id,UUID,NO,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+PlayerAchievement,earned_at,DATETIME,YES,NO,NO,,NO,Date earned,MANAGER,PLANNED
+,,,,,,,,,,
+TeamAchievement,id,UUID,YES,YES,NO,,NO,Team achievement,MANAGER,PLANNED
+TeamAchievement,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+TeamAchievement,achievement_id,UUID,YES,NO,YES,Achievement.id,NO,Achievement,MANAGER,PLANNED
+TeamAchievement,season_id,UUID,NO,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+TeamAchievement,earned_at,DATETIME,YES,NO,NO,,NO,Date earned,MANAGER,PLANNED
+,,,,,,,,,,
+AllStarEvent,id,UUID,YES,YES,NO,,NO,Unique All-Star event,MANAGER,PLANNED
+AllStarEvent,name,TEXT,YES,NO,NO,,NO,Event name,MANAGER,PLANNED
+AllStarEvent,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+AllStarEvent,date,DATETIME,NO,NO,NO,,NO,Event date,MANAGER,PLANNED
+,,,,,,,,,,
+AllStarSelection,id,UUID,YES,YES,NO,,NO,All-Star selection,MANAGER,PLANNED
+AllStarSelection,event_id,UUID,YES,NO,YES,AllStarEvent.id,NO,Event,MANAGER,PLANNED
+AllStarSelection,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+AllStarSelection,position,ENUM,NO,NO,NO,Position.id,NO,Selected position,MANAGER,PLANNED
+,,,,,,,,,,
+Training,id,UUID,YES,YES,NO,,NO,Unique training,MANAGER,PLANNED
+Training,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+Training,season_id,UUID,YES,NO,YES,Season.id,NO,Season,MANAGER,PLANNED
+Training,location_id,UUID,NO,NO,YES,Location.id,NO,Training location,MANAGER,PLANNED
+Training,date,DATETIME,YES,NO,NO,,NO,Training date,MANAGER,PLANNED
+,,,,,,,,,,
+TrainingParticipant,id,UUID,YES,YES,NO,,NO,Training participation,MANAGER,ACTIVE
+TrainingParticipant,training_id,UUID,YES,NO,YES,Training.id,NO,Training,MANAGER,ACTIVE
+TrainingParticipant,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,ACTIVE
+TrainingParticipant,status,ENUM,YES,NO,NO,,NO,Attendance status,MANAGER,ACTIVE
+,,,,,,,,,,ACTIVE
+Equipment,id,UUID,YES,YES,NO,,NO,Unique equipment,MANAGER,PLANNED
+Equipment,name,TEXT,YES,NO,NO,,NO,Equipment name,MANAGER,PLANNED
+Equipment,type,ENUM,YES,NO,NO,,NO,Equipment type,MANAGER,PLANNED
+Equipment,description,TEXT,NO,NO,NO,,NO,Equipment description,MANAGER,PLANNED
+,,,,,,,,,,
+PlayerEquipment,id,UUID,YES,YES,NO,,NO,Player equipment relationship,MANAGER,ACTIVE
+PlayerEquipment,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+PlayerEquipment,equipment_id,UUID,YES,NO,YES,Equipment.id,NO,Equipment,MANAGER,ACTIVE
+PlayerEquipment,start_date,DATE,NO,NO,NO,,NO,Assignment start,MANAGER,PLANNED
+PlayerEquipment,end_date,DATE,NO,NO,NO,,NO,Assignment end,MANAGER,PLANNED
+,,,,,,,,,,
+ScoutingReport,id,UUID,YES,YES,NO,,NO,Unique scouting report,MANAGER,PLANNED
+ScoutingReport,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+ScoutingReport,author_user_id,UUID,YES,NO,YES,User.id,NO,Report author,MANAGER,PLANNED
+ScoutingReport,date,DATETIME,YES,NO,NO,,NO,Report date,MANAGER,PLANNED
+ScoutingReport,content,TEXT,YES,NO,NO,,NO,Report content,MANAGER,PLANNED
+,,,,,,,,,,
+PlayerRating,id,UUID,YES,YES,NO,,NO,Unique player rating,MANAGER,PLANNED
+PlayerRating,player_id,UUID,YES,NO,YES,Player.id,NO,Player,MANAGER,PLANNED
+PlayerRating,rater_user_id,UUID,YES,NO,YES,User.id,NO,Rater,MANAGER,PLANNED
+PlayerRating,rating,DECIMAL,YES,NO,NO,,NO,Player rating,MANAGER,PLANNED
+PlayerRating,date,DATETIME,YES,NO,NO,,NO,Rating date,MANAGER,PLANNED
+,,,,,,,,,,
+NewsArticle,id,UUID,YES,YES,NO,,NO,Unique news article,MANAGER,PLANNED
+NewsArticle,title,TEXT,YES,NO,NO,,NO,Article title,MANAGER,PLANNED
+NewsArticle,content,TEXT,YES,NO,NO,,NO,Article content,MANAGER,PLANNED
+NewsArticle,author_user_id,UUID,NO,NO,YES,User.id,NO,Author,MANAGER,PLANNED
+NewsArticle,published_at,DATETIME,NO,NO,NO,,NO,Publication date,MANAGER,PLANNED
+NewsArticle,status,ENUM,YES,NO,NO,,NO,Article status,MANAGER,PLANNED
+,,,,,,,,,,
+Sponsor,id,UUID,YES,YES,NO,,NO,Unique sponsor,MANAGER,PLANNED
+Sponsor,name,TEXT,YES,NO,NO,,NO,Sponsor name,MANAGER,PLANNED
+Sponsor,website,TEXT,NO,NO,NO,,NO,Sponsor website,MANAGER,PLANNED
+Sponsor,logo_url,TEXT,NO,NO,NO,,NO,Sponsor logo,MANAGER,PLANNED
+,,,,,,,,,,
+TeamSponsor,id,UUID,YES,YES,NO,,NO,Team sponsor relationship,MANAGER,PLANNED
+TeamSponsor,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+TeamSponsor,sponsor_id,UUID,YES,NO,YES,Sponsor.id,NO,Sponsor,MANAGER,PLANNED
+TeamSponsor,start_date,DATE,NO,NO,NO,,NO,Sponsorship start,MANAGER,PLANNED
+TeamSponsor,end_date,DATE,NO,NO,NO,,NO,Sponsorship end,MANAGER,PLANNED
+,,,,,,,,,,
+LeagueSponsor,id,UUID,YES,YES,NO,,NO,League sponsor relationship,MANAGER,PLANNED
+LeagueSponsor,league_id,UUID,YES,NO,YES,League.id,NO,League,MANAGER,PLANNED
+LeagueSponsor,sponsor_id,UUID,YES,NO,YES,Sponsor.id,NO,Sponsor,MANAGER,PLANNED
+LeagueSponsor,start_date,DATE,NO,NO,NO,,NO,Sponsorship start,MANAGER,PLANNED
+LeagueSponsor,end_date,DATE,NO,NO,NO,,NO,Sponsorship end,MANAGER,PLANNED
+,,,,,,,,,,
+User,id,UUID,YES,YES,NO,,NO,Unique user identifier,HKS + MANAGER,ACTIVE
+User,username,TEXT,YES,NO,NO,,NO,Username,HKS,ACTIVE
+User,email,TEXT,NO,NO,NO,,NO,Email address,HKS,ACTIVE
+User,role,ENUM,YES,NO,NO,,NO,User role,HKS + MANAGER,ACTIVE
+User,status,ENUM,YES,NO,NO,,NO,User status,MANAGER,PLANNED
+,,,,,,,,,,
+UserTeam,id,UUID,YES,YES,NO,,NO,User-team relationship,MANAGER,PLANNED
+UserTeam,user_id,UUID,YES,NO,YES,User.id,NO,User,MANAGER,PLANNED
+UserTeam,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+,,,,,,,,,,
+UserLeague,id,UUID,YES,YES,NO,,NO,User-league relationship,MANAGER,PLANNED
+UserLeague,user_id,UUID,YES,NO,YES,User.id,NO,User,MANAGER,PLANNED
+UserLeague,league_id,UUID,YES,NO,YES,League.id,NO,League,MANAGER,PLANNED
+,,,,,,,,,,
+Invitation,id,UUID,YES,YES,NO,,NO,Unique invitation,MANAGER,PLANNED
+Invitation,email,TEXT,YES,NO,NO,,NO,Invited email address,MANAGER,PLANNED
+Invitation,role,ENUM,YES,NO,NO,,NO,Invited role,MANAGER,PLANNED
+Invitation,status,ENUM,YES,NO,NO,,NO,Invitation status,MANAGER,PLANNED
+Invitation,expires_at,DATETIME,YES,NO,NO,,NO,Invitation expiry,MANAGER,PLANNED
+,,,,,,,,,,
+AuditLog,id,UUID,YES,YES,NO,,NO,Unique audit record,MANAGER,PLANNED
+AuditLog,timestamp,DATETIME,YES,NO,NO,,NO,Time of action,MANAGER,PLANNED
+AuditLog,user_id,UUID,NO,NO,YES,User.id,NO,User performing action,MANAGER,PLANNED
+AuditLog,action,TEXT,YES,NO,NO,,NO,Action performed,MANAGER,PLANNED
+AuditLog,entity,TEXT,YES,NO,NO,,NO,Entity affected,MANAGER,PLANNED
+AuditLog,record_id,UUID,NO,NO,NO,,NO,Affected record,MANAGER,PLANNED
+AuditLog,reason,TEXT,NO,NO,NO,,NO,Reason for change,MANAGER,PLANNED
+,,,,,,,,,,
+Notification,id,UUID,YES,YES,NO,,NO,Unique notification,MANAGER,PLANNED
+Notification,user_id,UUID,YES,NO,YES,User.id,NO,Recipient,MANAGER,PLANNED
+Notification,type,ENUM,YES,NO,NO,,NO,Notification type,MANAGER,PLANNED
+Notification,message,TEXT,YES,NO,NO,,NO,Notification message,MANAGER,PLANNED
+Notification,read_at,DATETIME,NO,NO,NO,,NO,Read timestamp,MANAGER,PLANNED
+,,,,,,,,,,
+RSVP,id,UUID,YES,YES,NO,,NO,Unique RSVP,MANAGER,PLANNED
+RSVP,user_id,UUID,YES,NO,YES,User.id,NO,User,MANAGER,PLANNED
+RSVP,event_type,ENUM,YES,NO,NO,,NO,Event type,MANAGER,PLANNED
+RSVP,event_id,UUID,YES,NO,NO,,NO,Event identifier,MANAGER,PLANNED
+RSVP,status,ENUM,YES,NO,NO,,NO,Response,MANAGER,PLANNED
+,,,,,,,,,,
+Message,id,UUID,YES,YES,NO,,NO,Unique message,MANAGER,PLANNED
+Message,sender_user_id,UUID,YES,NO,YES,User.id,NO,Sender,MANAGER,PLANNED
+Message,receiver_user_id,UUID,YES,NO,YES,User.id,NO,Receiver,MANAGER,PLANNED
+Message,content,TEXT,YES,NO,NO,,NO,Message content,MANAGER,PLANNED
+Message,sent_at,DATETIME,YES,NO,NO,,NO,Message timestamp,MANAGER,PLANNED
+Message,read_at,DATETIME,NO,NO,NO,,NO,Read timestamp,MANAGER,PLANNED
+,,,,,,,,,,
+Person,id,UUID,YES,YES,NO,NO,NO,Unique person identifier,MANAGER,PLANNED
+Person,first_name,TEXT,YES,NO,NO,NO,NO,Voornaam,MANAGER,PLANNED
+Person,last_name,TEXT,YES,NO,NO,NO,NO,Achternaam,MANAGER,PLANNED
+Person,date_of_birth,DATE,NO,NO,NO,NO,NO,Geboortedatum,MANAGER,PLANNED
+Person,nationality,TEXT,NO,NO,NO,NO,NO,Nationaliteit,MANAGER,PLANNED
+Person,gender,ENUM,NO,NO,NO,NO,NO,Geslacht,MANAGER,PLANNED
+,,,,,,,,,,
+User,person_id,UUID,YES,NO,YES,Person.id,NO,Koppeling van User naar Person,MANAGER,PLANNED
+,,,,,,,,,,
+Player,person_id,UUID,YES,NO,YES,Person.id,NO,Koppeling van Player naar Person,MANAGER,PLANNED
+,,,,,,,,,,
+Official,person_id,UUID,YES,NO,YES,Person.id,NO,Koppeling van Official naar Person,MANAGER,PLANNED
+,,,,,,,,,,
+Role,id,UUID,YES,YES,NO,NO,NO,Unique role identifier,MANAGER,PLANNED
+Role,name,TEXT,YES,NO,NO,NO,NO,Naam van de rol (bijv. League Admin),MANAGER,PLANNED
+,,,,,,,,,,
+UserRole,id,UUID,YES,YES,NO,NO,NO,Unique User-Role link,MANAGER,PLANNED
+UserRole,user_id,UUID,YES,NO,YES,User.id,NO,Gebruiker,MANAGER,PLANNED
+UserRole,role_id,UUID,YES,NO,YES,Role.id,NO,Toegekende rol,MANAGER,PLANNED
+,,,,,,,,,,
+Permission,id,UUID,YES,YES,NO,NO,NO,Unique permission id,MANAGER,PLANNED
+Permission,code,TEXT,YES,NO,NO,NO,NO,Permissie code (bijv. view_finance),MANAGER,PLANNED
+,,,,,,,,,,
+RolePermission,id,UUID,YES,YES,NO,NO,NO,Unique Role-Permission link,MANAGER,PLANNED
+RolePermission,role_id,UUID,YES,NO,YES,Role.id,NO,Rol,MANAGER,PLANNED
+RolePermission,permission_id,UUID,YES,NO,YES,Permission.id,NO,Permissie,MANAGER,PLANNED
+,,,,,,,,,,
+ShotEvent,id,UUID,YES,YES,NO,NO,NO,Unique shot event,MANAGER,PLANNED
+ShotEvent,game_id,UUID,YES,NO,YES,Game.id,NO,Wedstrijd,MANAGER,PLANNED
+ShotEvent,player_id,UUID,YES,NO,YES,Player.id,NO,Schietende speler,MANAGER,PLANNED
+ShotEvent,goalie_id,UUID,NO,NO,YES,Player.id,NO,Keepende speler,MANAGER,PLANNED
+ShotEvent,period,INTEGER,YES,NO,NO,NO,NO,Periode van het schot,MANAGER,PLANNED
+ShotEvent,time,TEXT,YES,NO,NO,NO,NO,Tijd in de periode,MANAGER,PLANNED
+ShotEvent,x_coordinate,DECIMAL,YES,NO,NO,NO,NO,X-coördinaat op het ijsoppervlak,MANAGER,PLANNED
+ShotEvent,y_coordinate,DECIMAL,YES,NO,NO,NO,NO,Y-coördinaat op het ijsoppervlak,MANAGER,PLANNED
+ShotEvent,shot_type,ENUM,NO,NO,NO,NO,NO,"Type (Wrist, Slap, Backhand, Snap)",MANAGER,PLANNED
+ShotEvent,result,ENUM,YES,NO,NO,NO,NO,"Resultaat (Goal, Save, Miss, Blocked, Post)",MANAGER,PLANNED
+,,,,,,,,,,
+Staff,id,UUID,YES,YES,NO,NO,NO,Unique staff identifier,MANAGER,PLANNED
+Staff,person_id,UUID,YES,NO,YES,Person.id,NO,Persoonsrecord,MANAGER,PLANNED
+Staff,role_type,ENUM,YES,NO,NO,NO,NO,"Functie (Head Coach, Fysio, Manager)",MANAGER,PLANNED
+,,,,,,,,,,
+StaffTeam,id,UUID,YES,YES,NO,NO,NO,Staff-Team relationship,MANAGER,PLANNED
+StaffTeam,staff_id,UUID,YES,NO,YES,Staff.id,NO,Staflid,MANAGER,PLANNED
+StaffTeam,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+StaffTeam,season_id,UUID,NO,NO,YES,Season.id,NO,Seizoen,MANAGER,PLANNED
+,,,,,,,,,,
+Injury,id,UUID,YES,YES,NO,NO,NO,Unique injury record,MANAGER,PLANNED
+Injury,person_id,UUID,YES,NO,YES,Person.id,NO,Geblesseerde persoon,MANAGER,PLANNED
+Injury,description,TEXT,YES,NO,NO,NO,NO,Aard van de blessure,MANAGER,PLANNED
+Injury,injury_date,DATE,YES,NO,NO,NO,NO,Datum blessure opgelopen,MANAGER,PLANNED
+Injury,expected_return,DATE,NO,NO,NO,NO,NO,Verwachte retourdatum,MANAGER,PLANNED
+,,,,,,,,,,
+Suspension,id,UUID,YES,YES,NO,NO,NO,Unique suspension record,MANAGER,PLANNED
+Suspension,person_id,UUID,YES,NO,YES,Person.id,NO,Geschorste persoon,MANAGER,PLANNED
+Suspension,game_count,INTEGER,NO,NO,NO,NO,NO,Aantal wedstrijden schorsing,MANAGER,PLANNED
+,,,,,,,,,,
+Standing,id,UUID,YES,YES,NO,NO,NO,Unique standing record,MANAGER,PLANNED
+Standing,competition_id,UUID,YES,NO,YES,Competition.id,NO,Competitie,MANAGER,PLANNED
+Standing,team_id,UUID,YES,NO,YES,Team.id,NO,Team,MANAGER,PLANNED
+Standing,points,INTEGER,YES,NO,NO,NO,YES,Totaal aantal punten,MANAGER,PLANNED
+Standing,games_played,INTEGER,YES,NO,NO,NO,YES,Gespeelde wedstrijden,MANAGER,PLANNED
+,,,,,,,,,,
+Faceoff,id,UUID,YES,YES,NO,NO,NO,Unique faceoff event,MANAGER,PLANNED
+Faceoff,game_id,UUID,YES,NO,YES,Game.id,NO,Wedstrijd,MANAGER,PLANNED
+Faceoff,x_coordinate,DECIMAL,YES,NO,NO,NO,NO,X-coördinaat van de faceoff stip,MANAGER,PLANNED
+Faceoff,y_coordinate,DECIMAL,YES,NO,NO,NO,NO,Y-coördinaat van de faceoff stip,MANAGER,PLANNED
+Faceoff,won_by_player_id,UUID,YES,NO,YES,Player.id,NO,Speler die faceoff wint,MANAGER,PLANNED
+Faceoff,lost_by_player_id,UUID,YES,NO,YES,Player.id,NO,Speler die faceoff verliest,MANAGER,PLANNED
+,,,,,,,,,,
+Shift,id,UUID,YES,YES,NO,NO,NO,Unique shift record,MANAGER,PLANNED
+Shift,game_id,UUID,YES,NO,YES,Game.id,NO,Wedstrijd,MANAGER,PLANNED
+Shift,player_id,UUID,YES,NO,YES,Player.id,NO,Speler op het ijs,MANAGER,PLANNED
+Shift,start_time,TEXT,YES,NO,NO,NO,NO,Tijdstip op het ijs gestapt,MANAGER,PLANNED
+,,,,,,,,,,
+Booking,id,UUID,YES,YES,NO,,NO,Unique Booking identifier,MANAGER,PLANNED
+,,,,,,,,,,
+Hit,id,UUID,YES,YES,NO,,NO,Unique Hit identifier,MANAGER,PLANNED
+,,,,,,,,,,
+MediaAsset,id,UUID,YES,YES,NO,,NO,Unique MediaAsset identifier,MANAGER,PLANNED
+,,,,,,,,,,
+RetiredNumber,id,UUID,YES,YES,NO,,NO,Unique RetiredNumber identifier,MANAGER,PLANNED
+,,,,,,,,,,
+Line,id,UUID,YES,YES,NO,,NO,Unique Line identifier,MANAGER,PLANNED
+,,,,,,,,,,
+PlayoffSeries,id,UUID,YES,YES,NO,,NO,Unique PlayoffSeries identifier,MANAGER,PLANNED
+,,,,,,,,,,
+TournamentDivision,id,UUID,YES,YES,NO,,NO,Unique TournamentDivision identifier,MANAGER,PLANNED
+,,,,,,,,,,
+Ticket,id,UUID,YES,YES,NO,,NO,Unique Ticket identifier,MANAGER,PLANNED
+,,,,,,,,,,
+Player,GamesPlayed,INTEGER,NO,NO,NO,,YES,Aantal wedstrijden waarin speler daadwerkelijk heeft gespeeld,HKS,ACTIVE
+Player,Goals,INTEGER,NO,NO,NO,,YES,Totaal aantal doelpunten van speler,HKS,ACTIVE
+Player,Assists,INTEGER,NO,NO,NO,,YES,Totaal aantal assists van speler,HKS,ACTIVE
+Player,Points,INTEGER,NO,NO,NO,,YES,Totaal aantal punten van speler,HKS,ACTIVE
+Player,PlusMinus,INTEGER,NO,NO,NO,,YES,Plus/minus van speler,MANAGER,PLANNED
+Player,GoalsPerGame,DECIMAL,NO,NO,NO,,YES,Gemiddeld aantal doelpunten per wedstrijd,MANAGER,PLANNED
+Player,AssistsPerGame,DECIMAL,NO,NO,NO,,YES,Gemiddeld aantal assists per wedstrijd,MANAGER,PLANNED
+Player,PointsPerGame,DECIMAL,NO,NO,NO,,YES,Gemiddeld aantal punten per wedstrijd,MANAGER,PLANNED
+,,,,,,,,,,
+Team,TeamWins,INTEGER,NO,NO,NO,,YES,Aantal gewonnen wedstrijden,MANAGER,PLANNED
+Team,TeamLosses,INTEGER,NO,NO,NO,,YES,Aantal verloren wedstrijden,MANAGER,PLANNED
+Team,TeamTies,INTEGER,NO,NO,NO,,YES,Aantal gelijke wedstrijden,MANAGER,PLANNED
+Team,TeamOTL,INTEGER,NO,NO,NO,,YES,Aantal overtime losses,MANAGER,PLANNED
+Team,TeamSOL,INTEGER,NO,NO,NO,,YES,Aantal shootout losses,MANAGER,PLANNED
+Team,GoalsFor,INTEGER,NO,NO,NO,,YES,Totaal gescoorde doelpunten,MANAGER,PLANNED
+Team,GoalsAgainst,INTEGER,NO,NO,NO,,YES,Totaal tegendoelpunten,MANAGER,PLANNED
+Team,GoalDifference,INTEGER,NO,NO,NO,,YES,Doelsaldo,MANAGER,PLANNED
+Team,GamesPlayedTeam,INTEGER,NO,NO,NO,,YES,Aantal gespeelde wedstrijden,MANAGER,PLANNED
+Team,WinPercentage,DECIMAL,NO,NO,NO,,YES,Gewonnen percentage,MANAGER,PLANNED
+Team,StandingsPoints,INTEGER,NO,NO,NO,,YES,Punten voor ranglijst,MANAGER,PLANNED
+Team,StandingsRank,INTEGER,NO,NO,NO,,YES,Rangpositie,MANAGER,PLANNED
+,,,,,,,,,,
+Game,GoalCount,INTEGER,NO,NO,NO,,YES,Aantal doelpunten in wedstrijd,HKS,ACTIVE
+Game,GoalsAgainst,INTEGER,NO,NO,NO,,YES,Aantal tegendoelpunten,HKS,ACTIVE
+Game,ShootingPercentage,DECIMAL,NO,NO,NO,,YES,Schotpercentage,HKS,ACTIVE
+Game,SavePercentage,DECIMAL,NO,NO,NO,,YES,Save percentage goalie,HKS,ACTIVE
+Game,PowerPlayGoals,INTEGER,NO,NO,NO,,YES,Aantal powerplay goals,HKS,ACTIVE
+Game,ShortHandedGoals,INTEGER,NO,NO,NO,,YES,Aantal short-handed goals,HKS,ACTIVE
+,,,,,,,,,,
+PlayerSeason,PlayerSeasonGoals,INTEGER,NO,NO,NO,,YES,Totaal goals in seizoen,HKS + MANAGER,ACTIVE
+PlayerSeason,PlayerSeasonAssists,INTEGER,NO,NO,NO,,YES,Totaal assists in seizoen,HKS + MANAGER,ACTIVE
+PlayerSeason,PlayerSeasonPoints,INTEGER,NO,NO,NO,,YES,Totaal punten in seizoen,HKS + MANAGER,ACTIVE
+PlayerSeason,PlayerSeasonGames,INTEGER,NO,NO,NO,,YES,Aantal wedstrijden in seizoen,HKS + MANAGER,ACTIVE
+,,,,,,,,,,
+TeamSeason,TeamSeasonWins,INTEGER,NO,NO,NO,,YES,Aantal overwinningen in seizoen,MANAGER,PLANNED
+TeamSeason,TeamSeasonLosses,INTEGER,NO,NO,NO,,YES,Aantal nederlagen in seizoen,MANAGER,PLANNED
+TeamSeason,TeamSeasonGoalsFor,INTEGER,NO,NO,NO,,YES,Doelpunten voor in seizoen,MANAGER,PLANNED
+TeamSeason,TeamSeasonGoalsAgainst,INTEGER,NO,NO,NO,,YES,Tegendoelpunten in seizoen,MANAGER,PLANNED
+TeamSeason,TeamSeasonGoalDifference,INTEGER,NO,NO,NO,,YES,Doelsaldo in seizoen,MANAGER,PLANNED
+GoalieAppearance,time_on_ice_minutes,DECIMAL,YES,NO,NO,NO,NO,Gespeelde tijd in minuten (nodig voor GAA),MANAGER,PLANNED
+GoalieAppearance,decision,ENUM,NO,NO,NO,NO,NO,"Resultaat voor de goalie (W, L, OTL, None)",MANAGER,PLANNED
+TeamGameStats,power_play_opportunities,INTEGER,NO,NO,NO,NO,NO,Aantal powerplay kansen (nodig voor PP%),MANAGER,PLANNED
+TeamGameStats,penalty_kill_opportunities,INTEGER,NO,NO,NO,NO,NO,Aantal penalty kill situaties (nodig voor PK%),MANAGER,PLANNED
+TeamAffiliation,id,UUID,YES,YES,NO,,NO,Unieke identifier,MANAGER,PLANNED
+TeamAffiliation,parent_team_id,UUID,YES,NO,YES,Team.id,NO,Verwijzing naar het hoofdteam,MANAGER,PLANNED
+TeamAffiliation,affiliate_team_id,UUID,YES,NO,YES,Team.id,NO,Verwijzing naar het partnerteam/farm-team,MANAGER,PLANNED
+TeamAffiliation,start_date,DATE,YES,NO,NO,,NO,Startdatum van de affiliatie,MANAGER,PLANNED
+TeamAffiliation,end_date,DATE,NO,NO,NO,,NO,Einddatum van de affiliatie,MANAGER,PLANNED
+TeamAffiliation,affiliation_type,TEXT,YES,NO,NO,,NO,Type affiliatie (bijv. NHL/AHL),MANAGER,PLANNED
