@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { HockeyProvider, useHockeyDatabase } from './contexts/HockeyContext';
 import { Header } from './components/Dashboard/Header';
 import { CompetitieDashboard } from './components/Dashboard/CompetitieDashboard';
-import ScorekeeperScreen from './components/ScorekeeperScreen';
-import DatabaseScreen from './components/DatabaseScreen';
-import MainMenuScreen from './components/MainMenuScreen';
-import SettingsScreen from './components/SettingsScreen';
+import ScorekeeperScreen from './pages/ScorekeeperScreen';
+import DatabaseScreen from './pages/DatabaseScreen';
+import MainMenuScreen from './pages/MainMenuScreen';
+import SettingsScreen from './pages/SettingsScreen';
 import { defaultSettingsContract } from './settingsContract';
 import { motion } from 'framer-motion';
 

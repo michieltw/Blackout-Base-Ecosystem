@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Play, Users, ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react';
 import { GameConfig, Player } from '../types/scrapyard_types';
-import RosterModal from './Scorekeeper/RosterModal';
+import RosterModal from '../components/Scorekeeper/RosterModal';
 
 // 1. HET CONTRACT (Hierin staan alle definities en beginwaarden)
 export interface SettingsContract {

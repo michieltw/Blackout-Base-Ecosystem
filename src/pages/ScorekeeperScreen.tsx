@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { GameState, GameEvent, GameConfig, ActivePenalty } from '../types/scrapyard_types';
-import ScoreHeader from './Scorekeeper/ScoreHeader';
-import MediaControls from './Scorekeeper/MediaControls';
-import RinkMap from './Scorekeeper/RinkMap';
-import ActionLog from './Scorekeeper/ActionLog';
-import GoalModal from './Scorekeeper/GoalModal';
-import PenaltyModal from './Scorekeeper/PenaltyModal';
-import GameSummaryModal from './Scorekeeper/GameSummaryModal';
-import PeriodEndModal from './Scorekeeper/PeriodEndModal';
+import ScoreHeader from '../components/Scorekeeper/ScoreHeader';
+import MediaControls from '../components/Scorekeeper/MediaControls';
+import RinkMap from '../components/Scorekeeper/RinkMap';
+import ActionLog from '../components/Scorekeeper/ActionLog';
+import GoalModal from '../components/Scorekeeper/GoalModal';
+import PenaltyModal from '../components/Scorekeeper/PenaltyModal';
+import GameSummaryModal from '../components/Scorekeeper/GameSummaryModal';
+import PeriodEndModal from '../components/Scorekeeper/PeriodEndModal';
 import { SettingsContract } from '../settingsContract';
 import { useHockeyDatabase } from '../contexts/HockeyContext';
 
